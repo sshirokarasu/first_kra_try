@@ -1,0 +1,142 @@
+package cn.jxust.supermarket;
+
+import java.util.Scanner;
+/*
+商品专门放在一个对象包里
+ */
+
+public class Supermarket03 {
+    private static String  userName="";
+    private static String pwd="";
+    private static String[]goods=new String[50];
+    private static double[]prices=new double[50];
+    private static int[]count=new int[50];
+
+    private static void initial(){
+        goods[0]="小米13PRO";
+        prices[0]=5499;
+        count[0]=10;
+
+        goods[1]="VIVO X90";
+        prices[1]=5999;
+        count[1]=20;
+
+        goods[2]="OPPO FINDX6";
+        prices[2]=5299;
+        count[2]=12;
+    }
+    public static void print(String content){
+        System.out.println(content);
+    }
+
+    private static void register(Scanner input){
+        print("请输入用户名：");
+        userName= input.next();
+        print("请输入密码：");
+        pwd= input.next();
+        print("请再次输入密码：");
+        String cfmPwd= input.next();
+        while (!cfmPwd.equals(pwd)){
+            print("两次密码输入不同，请重新输入：");
+            print("请输入密码：");
+            pwd= input.next();
+            print("请再次输入密码：");
+            cfmPwd= input.next();
+        }
+        int checkedNumber=(int)(Math.random()*9000+1000);
+        print("请输入验证码："+checkedNumber+"\t");
+        int checkedNum= input.nextInt();
+        while(checkedNumber!=checkedNum){
+            print("验证码输入错误，请重新输入");
+            checkedNumber=(int)(Math.random()*9000+1000);
+            print("请输入验证码："+checkedNumber+"\t");
+            checkedNum= input.nextInt();
+        }
+        print("注册成功");
+    }
+
+    private static boolean login(Scanner input){
+        boolean isLogin=false;
+        //三次机会登录
+        for (int i=0;i<3;i++){
+            print("请输入登录的用户名：");
+            String uName= input.next();
+            print("请输入登录的密码：");
+            String uPwd= input.next();
+            if (uName.equals(userName)&&uPwd.equals(pwd)){
+                print("登陆成功！");
+                isLogin=true;
+                break;
+            }else{
+                if (i<2){
+                    print("用户名或者密码错误，您还有"+(2-i)+"次机会，请重新输入");
+                }else {
+                    print("三次均输入错误用户名或者密码");
+                }
+            }
+        }
+        return isLogin;
+    }
+
+    private static void goodsList(Scanner input){
+        print("商品列表");
+        print("==========================");
+        print("编号\t 名称\t    单价\t   剩余\t");
+        for (int i=0;i<3;i++){
+            print((i+1)+"\t"+goods[i]+"\t"+prices[i]+"\t"+count[i]);
+        }
+        print("==========================");
+    }
+
+    public static void main(String [] args){
+        Scanner input=new Scanner(System.in);
+        boolean isLogin=false;
+        boolean isRegister=false;
+        initial();
+        while(true){
+            print("============================欢迎来到理工超市管理系统==================================");
+            print("1.用户注册 2.用户登录 3.浏览商品 4.查看商品详细 5.加入购物车 6.查看购物车 7.结算 8.退出");
+            print("=================================================================================");
+            int choice= input.nextInt();
+            switch (choice){
+                case 1:
+                    print("用户注册");
+                    register(input);
+                    isRegister=true;
+                    continue;
+                case 2:
+                    print("用户登录");
+                    if(!isRegister){
+                        print("请先注册再登录");
+                        continue;
+                    }
+                    isLogin=login(input);
+
+                    continue;
+                case 3:
+                    print("浏览商品");
+                    goodsList(input);
+                    continue;
+                case 4:
+                    print("查看商品详情");
+                    continue;
+                case 5:
+                    print("加入购物车");
+                    continue;
+                case 6:
+                    print("查看购物车");
+                    continue;
+                case 7:
+                    print("结算");
+                    continue;
+                case 8:
+                    print("退出");
+                    continue;
+                default:
+                    print("输入错误，请重新输入");
+                    continue;
+            }
+
+        }
+    }
+}
